@@ -1,0 +1,315 @@
+{
+  "_comment": "Real response captured 2026-07-09 from POST https://trouverunlogement.lescrous.fr/api/fr/search/47 (idTool=47). Truncated to 3 representative items; long HTML descriptions shortened. Item id=581 (Montlucon) is the false-positive trap: entity.name='Clermont Auvergne' and description links to a 'clermont-aubiere' URL, but the accommodation is in Montlucon and must NOT match.",
+  "results": {
+    "total": {
+      "value": 25,
+      "relation": "eq"
+    },
+    "page": 0,
+    "pageSize": 24,
+    "items": [
+      {
+        "code": 94,
+        "reference": "3",
+        "bedroomCount": 1,
+        "id": 687,
+        "residence": {
+          "publicTransports": [],
+          "code": 19,
+          "uairne": "0542325J",
+          "address": "8, Avenue du Bivaque BP 50059 54405 LONGWY CEDEX",
+          "parkings": [
+            {
+              "parking": {
+                "name": "Stationnement urbain gratuit",
+                "id": "10402a4e-fa98-11e7-89ed-005056940822"
+              },
+              "description": null,
+              "id": "9ce640fa-0db9-11e8-89ed-005056940822"
+            }
+          ],
+          "description": "<p>D&eacute;couvrez la r&eacute;sidence universitaire Jean Monnet, avec ses 208 logements.</p>",
+          "location": {
+            "lon": 5.755,
+            "lat": 49.523
+          },
+          "sharedTransports": [],
+          "id": "4e9b3d98-0b73-11e8-89ed-005056940822",
+          "entity": {
+            "name": "Lorraine",
+            "id": 28
+          },
+          "medias": [
+            {
+              "src": "4e9b3d98-0b73-11e8-89ed-005056940822/647d93d516d35-JeanMonnet1.jpg"
+            }
+          ],
+          "label": "CU JEAN MONNET"
+        },
+        "bedCount": 2,
+        "adaptedPmr": false,
+        "roomCount": 1,
+        "area": {
+          "min": 27.0,
+          "max": 27.0
+        },
+        "label": "T1bis 2P",
+        "indicators": [
+          {
+            "tool_id": 47,
+            "highDemand": false,
+            "lowStock": false
+          }
+        ],
+        "equipments": [
+          {
+            "id": "d090e186-fa0e-11e7-89ed-005056940822",
+            "category": "Bâtiment",
+            "label": "WC"
+          },
+          {
+            "id": "d0910683-fa0e-11e7-89ed-005056940822",
+            "category": "Bâtiment",
+            "label": "Douche"
+          }
+        ],
+        "bookingData": {
+          "amount": 7000
+        },
+        "highDemand": false,
+        "lowStock": false,
+        "occupationModes": [
+          {
+            "type": "alone",
+            "rent": {
+              "min": 50102,
+              "max": 50102
+            }
+          },
+          {
+            "type": "couple",
+            "rent": {
+              "min": 50102,
+              "max": 50102
+            }
+          }
+        ],
+        "available": true,
+        "beds": [
+          {
+            "count": 2,
+            "type": "mobile"
+          }
+        ],
+        "inUnavailabilityPeriod": false,
+        "unavailabilityMessage": null,
+        "specialConditions": null,
+        "description": null,
+        "studyLevel": {
+          "min": null,
+          "max": null
+        },
+        "medias": [
+          {
+            "src": "687/648198ae4ce7b-Jean Monnet 27m² 1.png",
+            "description": "@ Photo Maël Joanas"
+          }
+        ]
+      },
+      {
+        "code": 92,
+        "reference": "3",
+        "bedroomCount": 1,
+        "id": 267,
+        "residence": {
+          "publicTransports": [
+            {
+              "distance": 1,
+              "unitOfMeasure": "on_foot",
+              "description": "Lignes 1,5 et 8",
+              "id": "1ab8db93-01dd-11e8-89ed-005056940822",
+              "publicTransport": {
+                "name": "Bus",
+                "id": "057fbe77-fa97-11e7-89ed-005056940822"
+              }
+            }
+          ],
+          "code": 36,
+          "uairne": "0471023G",
+          "address": "Av. Michel Serres 47000 AGEN",
+          "parkings": [],
+          "description": "<p>A c&ocirc;t&eacute; des IUT et du DUSA.</p>",
+          "location": {
+            "lon": 0.624,
+            "lat": 44.185
+          },
+          "sharedTransports": [],
+          "id": "f8ed1110-fc8e-11e7-89ed-005056940822",
+          "entity": {
+            "name": "Bordeaux",
+            "id": 4
+          },
+          "medias": [
+            {
+              "src": "f8ed1110-fc8e-11e7-89ed-005056940822/62567c30c7382-Exterieur_2_la_cressonniere.jpg"
+            }
+          ],
+          "label": "CRESSONNIERE"
+        },
+        "bedCount": 2,
+        "adaptedPmr": false,
+        "roomCount": 1,
+        "area": {
+          "min": 30.0,
+          "max": 30.0
+        },
+        "label": "T1BIS LIT DOUBLE",
+        "indicators": [
+          {
+            "tool_id": 47,
+            "highDemand": false,
+            "lowStock": false
+          }
+        ],
+        "equipments": [],
+        "bookingData": {
+          "amount": 7000
+        },
+        "highDemand": false,
+        "lowStock": false,
+        "occupationModes": [
+          {
+            "type": "alone",
+            "rent": {
+              "min": 63349,
+              "max": 63349
+            }
+          },
+          {
+            "type": "couple",
+            "rent": {
+              "min": 63349,
+              "max": 63349
+            }
+          }
+        ],
+        "available": true,
+        "beds": [
+          {
+            "count": 2,
+            "type": "mobile"
+          }
+        ],
+        "inUnavailabilityPeriod": false,
+        "unavailabilityMessage": null,
+        "specialConditions": null,
+        "description": null,
+        "studyLevel": {
+          "min": null,
+          "max": null
+        },
+        "medias": []
+      },
+      {
+        "code": 3,
+        "reference": "1",
+        "bedroomCount": 1,
+        "id": 581,
+        "residence": {
+          "publicTransports": [
+            {
+              "distance": 3,
+              "unitOfMeasure": "on_foot",
+              "description": "Bus C5 et 5B arrêt Soulier",
+              "id": "d119d881-0bf3-11e8-89ed-005056940822",
+              "publicTransport": {
+                "name": "Bus",
+                "id": "057fbe77-fa97-11e7-89ed-005056940822"
+              }
+            }
+          ],
+          "code": 26,
+          "uairne": "0030992M",
+          "address": "Allée J.J. Soulier - BP 409 - 03107 MONTLUCON",
+          "parkings": [],
+          "description": "<p>Pour plus d'information, cliquez <a href=\"https://www.crous-clermont.fr/se-loger/je-cherche-un-logement/les-logements-crous-a-clermont-aubiere-et-montlucon/logement-crous-a-montlucon-residence-montlucon/\">ICI</a></p>",
+          "location": {
+            "lon": 2.588,
+            "lat": 46.329
+          },
+          "sharedTransports": [],
+          "id": "42576b6b-0bf3-11e8-89ed-005056940822",
+          "entity": {
+            "name": "Clermont Auvergne",
+            "id": 7
+          },
+          "medias": [
+            {
+              "src": "42576b6b-0bf3-11e8-89ed-005056940822/5ab0c2ee101ac-Montlu-ext.jpg"
+            }
+          ],
+          "label": "Montlucon"
+        },
+        "bedCount": 1,
+        "adaptedPmr": false,
+        "roomCount": 1,
+        "area": {
+          "min": 9.0,
+          "max": 9.0
+        },
+        "label": "Chambre",
+        "indicators": [
+          {
+            "tool_id": 47,
+            "highDemand": false,
+            "lowStock": false
+          }
+        ],
+        "equipments": [
+          {
+            "id": "d0914ae7-fa0e-11e7-89ed-005056940822",
+            "category": "Bâtiment",
+            "label": "Frigo"
+          }
+        ],
+        "bookingData": {
+          "amount": 7000
+        },
+        "highDemand": false,
+        "lowStock": false,
+        "occupationModes": [
+          {
+            "type": "alone",
+            "rent": {
+              "min": 24028,
+              "max": 24028
+            }
+          }
+        ],
+        "available": true,
+        "beds": [
+          {
+            "count": 1,
+            "type": "simple"
+          }
+        ],
+        "inUnavailabilityPeriod": false,
+        "unavailabilityMessage": null,
+        "specialConditions": null,
+        "description": null,
+        "studyLevel": {
+          "min": null,
+          "max": null
+        },
+        "medias": []
+      }
+    ]
+  },
+  "aggregations": {
+    "occupationModes": {
+      "alone": 23,
+      "couple": 3,
+      "house_sharing": 2
+    }
+  }
+}
