@@ -53,8 +53,11 @@ crous-monitor/
       `python -m src.notifier "test"` manual test.
 - [x] Phase 6 — Orchestration & logging: exit 0/1, monitor.log + stdout,
       run start/end markers, fetched/matched/new counts.
-- [ ] Phase 7 — Deployment: deploy/setup_vps.sh + deploy/crontab.txt
-      (`*/5 * * * * cd /opt/crous-monitor && ./venv/bin/python -m src.main >> monitor.log 2>&1`).
+- [x] Phase 7 — Deployment (GitHub Actions variant):
+      .github/workflows/monitor.yml runs every 5 min (drift 5–15 min),
+      secrets TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID, variable ID_TOOL,
+      state.json persisted between runs via actions/cache.
+      VPS variant (deploy/setup_vps.sh + crontab) not needed for now.
 
 ## Constraints
 
