@@ -44,9 +44,11 @@ jobs:
           NOTIFIER: telegram
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          # "Still alive" Telegram message interval; override with a
-          # repository variable (0 disables, 0.084 ≈ every cycle).
-          HEARTBEAT_HOURS: ${{ vars.HEARTBEAT_HOURS || '1' }}
+          # The end-of-job bilan is the hourly "still alive" message, so the
+          # in-run heartbeat is off; override with a repository variable.
+          HEARTBEAT_HOURS: ${{ vars.HEARTBEAT_HOURS || '0' }}
+          # Each cycle appends its counts here; src.bilan summarizes at the end.
+          RUN_STATS_FILE: cycles.jsonl
         run: |
           deadline=$(( SECONDS + 54*60 ))
           failures=0
@@ -62,6 +64,16 @@ jobs:
           echo "Cycles: $cycles, failures: $failures"
           # Only fail the job if not a single cycle worked.
           [ "$failures" -lt "$cycles" ]
+
+      - name: Send hourly bilan to Telegram
+        if: always()
+        env:
+          ID_TOOL: ${{ vars.ID_TOOL || secrets.ID_TOOL }}
+          NOTIFIER: telegram
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_STATS_FILE: cycles.jsonl
+        run: python -m src.bilan
 
       - name: Save state
         if: always() && hashFiles('state.json') != ''

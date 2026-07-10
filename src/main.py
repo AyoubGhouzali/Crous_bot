@@ -10,6 +10,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from .bilan import append_stats
 from .config import Config, ConfigError, load_config
 from .fetcher import FetchError, fetch_all
 from .filters import matches_target
@@ -96,16 +97,37 @@ def run() -> int:
         # that disappears (booked) and later reappears (freed) re-alerts.
         save_state(state_path, {int(item["id"]) for item in matched}, last_heartbeat)
         log.info("Counts: fetched=%d matched=%d new=%d", len(items), len(matched), len(new_items))
+        if cfg.run_stats_file:
+            append_stats(cfg.run_stats_file, {
+                "ts": now.isoformat(),
+                "ok": True,
+                "fetched": len(items),
+                "matched": len(matched),
+                "new": 0 if first_run else len(new_items),
+            })
         log.info("--- run end (ok) ---")
         return 0
     except FetchError as exc:
         log.error("Fetch failed, state left untouched: %s", exc)
+        _record_failure(cfg)
         log.info("--- run end (error) ---")
         return 1
     except Exception:
         log.exception("Unexpected error")
+        _record_failure(cfg)
         log.info("--- run end (error) ---")
         return 1
+
+
+def _record_failure(cfg: Config) -> None:
+    if cfg.run_stats_file:
+        append_stats(cfg.run_stats_file, {
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "ok": False,
+            "fetched": 0,
+            "matched": 0,
+            "new": 0,
+        })
 
 
 if __name__ == "__main__":

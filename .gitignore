@@ -1,5 +1,6 @@
 .env
 state.json
+cycles.jsonl
 *.log
 __pycache__/
 *.py[cod]

@@ -16,10 +16,13 @@ save the current ID set.
 - The very first run seeds `state.json` silently (no alert flood).
 - A room that gets booked (disappears) and later frees up (reappears)
   alerts again, because state stores the *current* matched set.
-- Every hour (configurable via `HEARTBEAT_HOURS`, 0 disables) the bot sends a
-  "✅ Heartbeat" message with the latest counts — if it stops arriving, the
-  workflow is down (check the repo's Actions tab). Real alerts use a distinct
-  🚨🔴 template so they stand out.
+- Alerts are sent immediately, in the same 5-minute cycle that finds the
+  accommodation — never batched to the end of the hour.
+- At the end of each hourly Actions job, a "📊 Bilan horaire" Telegram message
+  summarizes the run (cycles, failures, counts, alerts sent) — it doubles as
+  the "still alive" signal: if it stops arriving, check the Actions tab. Real
+  alerts use a distinct 🚨🔴 template so they stand out. (For cron/VPS
+  deployments there is a per-run heartbeat instead, see `HEARTBEAT_HOURS`.)
 - Filters only scan `residence.address`, `residence.label` and `item.label` —
   never the whole JSON. Rents are stored in cents (363000 would false-positive
   on zip 63000) and descriptions mention "Clermont" for residences that are

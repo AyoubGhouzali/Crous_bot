@@ -38,6 +38,7 @@ class Config:
     request_timeout: float = 30.0
     retry_delays: tuple[float, ...] = (5.0, 10.0, 20.0)
     heartbeat_hours: float = 1.0  # 0 disables the periodic "still alive" message
+    run_stats_file: str = ""  # when set, each run appends a JSONL stats record (for src.bilan)
     state_file: str = "state.json"
     log_file: str = "monitor.log"
 
@@ -87,5 +88,6 @@ def load_config() -> Config:
             raise ConfigError(f"Invalid HEARTBEAT_HOURS value {heartbeat!r}: must be a number.")
     if state_file := os.environ.get("STATE_FILE"):
         cfg.state_file = state_file
+    cfg.run_stats_file = os.environ.get("RUN_STATS_FILE", "").strip()
 
     return cfg
