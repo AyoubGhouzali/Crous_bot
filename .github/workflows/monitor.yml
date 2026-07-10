@@ -42,7 +42,7 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           # "Still alive" Telegram message interval; override with a
           # repository variable (0 disables, 0.084 ≈ every run).
-          HEARTBEAT_HOURS: ${{ vars.HEARTBEAT_HOURS || '24' }}
+          HEARTBEAT_HOURS: ${{ vars.HEARTBEAT_HOURS || '1' }}
         run: python -m src.main
 
       - name: Save state

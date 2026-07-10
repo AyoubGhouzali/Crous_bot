@@ -44,11 +44,13 @@ def format_message(item: dict, cfg: Config) -> str:
     rent = f"{rent_cents / 100:.2f} €/mois" if rent_cents is not None else "loyer inconnu"
     link = cfg.accommodation_url(item["id"])
     return (
-        f"🏠 Nouveau logement CROUS !\n"
-        f"{name}\n"
+        f"🚨🔴 ALERTE : NOUVEAU LOGEMENT DISPONIBLE 🔴🚨\n"
+        f"\n"
+        f"🏠 {name}\n"
         f"📍 {address}\n"
         f"💶 {rent} — 📐 {_format_area(item)}\n"
-        f"👉 {link}"
+        f"\n"
+        f"⚡ Réservez vite :\n{link}"
     )
 
 

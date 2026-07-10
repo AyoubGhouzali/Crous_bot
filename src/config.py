@@ -37,7 +37,7 @@ class Config:
     page_pause: float = 1.0
     request_timeout: float = 30.0
     retry_delays: tuple[float, ...] = (5.0, 10.0, 20.0)
-    heartbeat_hours: float = 24.0  # 0 disables the periodic "still alive" message
+    heartbeat_hours: float = 1.0  # 0 disables the periodic "still alive" message
     state_file: str = "state.json"
     log_file: str = "monitor.log"
 

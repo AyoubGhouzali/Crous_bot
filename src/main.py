@@ -27,12 +27,12 @@ def heartbeat_due(last: datetime | None, now: datetime, hours: float) -> bool:
 
 def _heartbeat_text(cfg: Config, fetched: int, matched: int, new: int, first_run: bool) -> str:
     lines = [
-        "✅ CROUS monitor actif",
-        f"Dernier run : {fetched} logements en ligne, {matched} à Clermont-Fd/Aubière, {new} nouveaux.",
+        "✅ Heartbeat — monitor actif (message de routine, PAS une alerte)",
+        f"{fetched} logements en ligne, {matched} à Clermont-Fd/Aubière, {new} nouveaux.",
     ]
     if first_run:
         lines.append("(Premier run : état initialisé, les alertes commencent au prochain run.)")
-    lines.append(f"Prochain point dans ~{cfg.heartbeat_hours:g} h. Si ce message cesse d'arriver, vérifiez l'onglet Actions du repo.")
+    lines.append(f"Prochain heartbeat dans ~{cfg.heartbeat_hours:g} h — s'il cesse d'arriver, vérifiez l'onglet Actions du repo.")
     return "\n".join(lines)
 
 
