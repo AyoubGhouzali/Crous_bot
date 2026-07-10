@@ -2,11 +2,13 @@ name: CROUS monitor
 
 on:
   schedule:
-    # Hourly trigger (offset from :00 — GitHub skips top-of-the-hour crons
-    # the most). Each job then polls every 5 min for ~54 min, because
-    # GitHub's scheduler silently skips high-frequency crons like */5:
-    # hourly firings are far more reliable than 5-minute ones.
-    - cron: "7 * * * *"
+    # GitHub's scheduler silently skips firings (observed: 2 skipped hours
+    # in a row), so fire 3x/hour for redundancy. Each firing starts a
+    # ~54-min job that polls every 5 min; the concurrency group queues one
+    # extra and auto-cancels older duplicates, so redundant firings are
+    # harmless and a single successful firing per hour keeps coverage
+    # continuous. Offsets avoid :00, which is skipped the most.
+    - cron: "7,27,47 * * * *"
   workflow_dispatch:
 
 concurrency:
