@@ -37,6 +37,7 @@ class Config:
     page_pause: float = 1.0
     request_timeout: float = 30.0
     retry_delays: tuple[float, ...] = (5.0, 10.0, 20.0)
+    heartbeat_hours: float = 24.0  # 0 disables the periodic "still alive" message
     state_file: str = "state.json"
     log_file: str = "monitor.log"
 
@@ -79,6 +80,11 @@ def load_config() -> Config:
 
     if page_size := os.environ.get("PAGE_SIZE"):
         cfg.page_size = int(page_size)
+    if heartbeat := os.environ.get("HEARTBEAT_HOURS"):
+        try:
+            cfg.heartbeat_hours = float(heartbeat)
+        except ValueError:
+            raise ConfigError(f"Invalid HEARTBEAT_HOURS value {heartbeat!r}: must be a number.")
     if state_file := os.environ.get("STATE_FILE"):
         cfg.state_file = state_file
 
