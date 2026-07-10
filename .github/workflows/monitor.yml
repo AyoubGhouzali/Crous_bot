@@ -36,7 +36,7 @@ jobs:
 
       - name: Run monitor
         env:
-          ID_TOOL: ${{ vars.ID_TOOL }}
+          ID_TOOL: ${{ vars.ID_TOOL || secrets.ID_TOOL }}
           NOTIFIER: telegram
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
