@@ -27,9 +27,12 @@ save the current ID set.
 
 ## Deployment (GitHub Actions — already set up)
 
-`.github/workflows/monitor.yml` runs every 5 minutes (GitHub's scheduler
-drifts to 5–15 min in practice). `state.json` is persisted between runs with
-`actions/cache`.
+GitHub's cron scheduler silently skips high-frequency schedules (a `*/5`
+cron fires anywhere from every 5 minutes to every few hours), so
+`.github/workflows/monitor.yml` is triggered **hourly** and each job then
+polls the API every 5 minutes for ~54 minutes — real 5-minute cadence with
+only one scheduler dependency per hour. `state.json` is persisted between
+jobs with `actions/cache`.
 
 Repository → Settings → Secrets and variables → Actions:
 

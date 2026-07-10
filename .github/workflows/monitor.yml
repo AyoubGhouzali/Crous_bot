@@ -2,8 +2,11 @@ name: CROUS monitor
 
 on:
   schedule:
-    # GitHub's minimum interval; actual firing drifts 5-15 min under load.
-    - cron: "*/5 * * * *"
+    # Hourly trigger (offset from :00 — GitHub skips top-of-the-hour crons
+    # the most). Each job then polls every 5 min for ~54 min, because
+    # GitHub's scheduler silently skips high-frequency crons like */5:
+    # hourly firings are far more reliable than 5-minute ones.
+    - cron: "7 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -13,7 +16,7 @@ concurrency:
 jobs:
   poll:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 58
     steps:
       - uses: actions/checkout@v4
 
@@ -24,8 +27,9 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      # state.json must survive between runs: without it every run would be
-      # a "first run" that seeds silently and never alerts.
+      # state.json must survive between jobs: without it every job would
+      # start with a "first run" that seeds silently and never alerts.
+      # (Within a job, the loop below shares state via the workspace.)
       - name: Restore state from previous run
         uses: actions/cache/restore@v4
         with:
@@ -34,16 +38,30 @@ jobs:
           restore-keys: |
             crous-state-
 
-      - name: Run monitor
+      - name: Poll every 5 minutes for ~54 minutes
         env:
           ID_TOOL: ${{ vars.ID_TOOL || secrets.ID_TOOL }}
           NOTIFIER: telegram
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           # "Still alive" Telegram message interval; override with a
-          # repository variable (0 disables, 0.084 ≈ every run).
+          # repository variable (0 disables, 0.084 ≈ every cycle).
           HEARTBEAT_HOURS: ${{ vars.HEARTBEAT_HOURS || '1' }}
-        run: python -m src.main
+        run: |
+          deadline=$(( SECONDS + 54*60 ))
+          failures=0
+          cycles=0
+          while true; do
+            cycles=$(( cycles + 1 ))
+            echo "::group::cycle $cycles ($(date -u +%H:%M:%S) UTC)"
+            python -m src.main || failures=$(( failures + 1 ))
+            echo "::endgroup::"
+            [ $(( SECONDS + 300 )) -ge "$deadline" ] && break
+            sleep 300
+          done
+          echo "Cycles: $cycles, failures: $failures"
+          # Only fail the job if not a single cycle worked.
+          [ "$failures" -lt "$cycles" ]
 
       - name: Save state
         if: always() && hashFiles('state.json') != ''
