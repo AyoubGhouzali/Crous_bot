@@ -60,7 +60,7 @@ def run() -> int:
     log.info("--- run start ---")
     try:
         items = fetch_all(cfg)
-        matched = [item for item in items if matches_target(item)]
+        matched = [item for item in items if matches_target(item, cfg.radius_km)]
 
         state_path = Path(cfg.state_file)
         first_run = not state_path.exists()

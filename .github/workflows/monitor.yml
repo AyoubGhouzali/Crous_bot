@@ -49,6 +49,8 @@ jobs:
           HEARTBEAT_HOURS: ${{ vars.HEARTBEAT_HOURS || '0' }}
           # Each cycle appends its counts here; src.bilan summarizes at the end.
           RUN_STATS_FILE: cycles.jsonl
+          # Geo safety net: also match anything within this many km of ISIMA.
+          TARGET_RADIUS_KM: ${{ vars.TARGET_RADIUS_KM || '10' }}
         run: |
           deadline=$(( SECONDS + 54*60 ))
           failures=0

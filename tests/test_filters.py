@@ -1,4 +1,7 @@
-from src.filters import matches_target, normalize
+from src.filters import distance_km, distance_to_target, matches_target, normalize
+
+# ISIMA / campus des Cézeaux
+ISIMA = (45.7590, 3.1110)
 
 
 def test_normalize_strips_accents_and_case():
@@ -54,3 +57,49 @@ def test_montlucon_fixture_item_does_not_match(sample_items):
 def test_no_fixture_item_matches(sample_items):
     # The captured page contains no Clermont-Ferrand/Aubière accommodation.
     assert [i["id"] for i in sample_items if matches_target(i)] == []
+
+
+def test_clermont_fd_abbreviation_matches(make_item):
+    assert matches_target(make_item(address="25 rue Kessler CLERMONT-FD"))
+    assert matches_target(make_item(address="25 rue Kessler Clermont Fd"))
+
+
+def test_second_clermont_zip_and_aubiere_cedex_match(make_item):
+    assert matches_target(make_item(address="130 avenue de Cournon 63100"))
+    assert matches_target(make_item(address="BP 86 63178 CEDEX"))
+
+
+def test_distance_km_isima_to_montlucon():
+    # Fixture Montluçon residence is ~75 km from campus.
+    d = distance_km(*ISIMA, 46.329, 2.588)
+    assert 60 < d < 90
+
+
+def test_geo_match_catches_unrecognizable_address(make_item):
+    # Address gives no usable city/zip, but coordinates are on campus:
+    # the radius check must catch it.
+    item = make_item(address="1 rue de la Chebarde, Campus des Cezeaux")
+    item["residence"]["location"] = {"lat": 45.758, "lon": 3.111}
+    assert matches_target(item, radius_km=10)
+
+
+def test_geo_does_not_match_far_location(make_item, sample_items):
+    item = make_item(address="Somewhere in France")
+    item["residence"]["location"] = {"lat": 46.329, "lon": 2.588}  # Montluçon
+    assert not matches_target(item, radius_km=10)
+    # The real Montluçon fixture item has coordinates too and must stay out.
+    montlucon = next(i for i in sample_items if i["id"] == 581)
+    assert not matches_target(montlucon, radius_km=10)
+
+
+def test_geo_disabled_with_radius_zero(make_item):
+    item = make_item(address="1 rue de la Chebarde")
+    item["residence"]["location"] = {"lat": 45.758, "lon": 3.111}
+    assert not matches_target(item, radius_km=0)
+
+
+def test_missing_location_falls_back_to_text_only(make_item):
+    item = make_item(address="12 avenue des Landais AUBIERE")
+    item["residence"]["location"] = {}
+    assert matches_target(item, radius_km=10)
+    assert distance_to_target(item) is None

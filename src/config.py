@@ -9,8 +9,20 @@ from dotenv import load_dotenv
 
 # Target-area constants. These are business rules, not deployment config,
 # so they live in code rather than in .env.
-TARGET_CITY_KEYWORDS = frozenset({"clermont-ferrand", "clermont ferrand", "aubiere"})
-TARGET_ZIP_CODES = frozenset({"63000", "63170"})
+TARGET_CITY_KEYWORDS = frozenset({
+    "clermont-ferrand", "clermont ferrand",
+    "clermont-fd", "clermont fd",  # common abbreviation in CROUS addresses
+    "aubiere",
+})
+# 63000/63100 = Clermont-Ferrand, 63170/63178 = Aubière (incl. cedex)
+TARGET_ZIP_CODES = frozenset({"63000", "63100", "63170", "63178"})
+
+# ISIMA, campus des Cézeaux, Aubière. Anything with residence.location
+# within TARGET_RADIUS_KM of this point matches regardless of how its
+# address is written (safety net for spelling variants).
+TARGET_LAT = 45.7590
+TARGET_LON = 3.1110
+DEFAULT_RADIUS_KM = 10.0
 
 BASE_URL = "https://trouverunlogement.lescrous.fr"
 
@@ -38,6 +50,7 @@ class Config:
     request_timeout: float = 30.0
     retry_delays: tuple[float, ...] = (5.0, 10.0, 20.0)
     heartbeat_hours: float = 1.0  # 0 disables the periodic "still alive" message
+    radius_km: float = DEFAULT_RADIUS_KM  # geo match radius around ISIMA; 0 disables
     run_stats_file: str = ""  # when set, each run appends a JSONL stats record (for src.bilan)
     state_file: str = "state.json"
     log_file: str = "monitor.log"
@@ -86,6 +99,11 @@ def load_config() -> Config:
             cfg.heartbeat_hours = float(heartbeat)
         except ValueError:
             raise ConfigError(f"Invalid HEARTBEAT_HOURS value {heartbeat!r}: must be a number.")
+    if radius := os.environ.get("TARGET_RADIUS_KM"):
+        try:
+            cfg.radius_km = float(radius)
+        except ValueError:
+            raise ConfigError(f"Invalid TARGET_RADIUS_KM value {radius!r}: must be a number.")
     if state_file := os.environ.get("STATE_FILE"):
         cfg.state_file = state_file
     cfg.run_stats_file = os.environ.get("RUN_STATS_FILE", "").strip()

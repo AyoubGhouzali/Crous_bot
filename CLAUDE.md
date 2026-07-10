@@ -30,6 +30,9 @@ pagination stops when a page returns fewer than `pageSize` items).
   "Clermont Auvergne" for accommodations in Montluçon (see fixture item id=581).
   Only scan `residence.address`, `residence.label`, `item.label`.
 - Never match bare "clermont" (Clermont-l'Hérault 34800 and Clermont 60600 exist).
+- Matching is text (keywords incl. "clermont-fd", zips 63000/63100/63170/63178)
+  OR geo: `residence.location` within TARGET_RADIUS_KM (default 10) of ISIMA
+  (45.7590, 3.1110) — the geo net catches address spelling variants.
 - First run seeds `state.json` silently — no alerts.
 - State stores the *current* matched ID set each run, so a booked room that
   frees up again re-alerts.

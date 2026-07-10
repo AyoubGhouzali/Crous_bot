@@ -11,6 +11,7 @@ import sys
 import requests
 
 from .config import Config, load_config
+from .filters import distance_to_target
 
 log = logging.getLogger(__name__)
 
@@ -43,12 +44,15 @@ def format_message(item: dict, cfg: Config) -> str:
     rent_cents = _min_rent_cents(item)
     rent = f"{rent_cents / 100:.2f} €/mois" if rent_cents is not None else "loyer inconnu"
     link = cfg.accommodation_url(item["id"])
+    distance = distance_to_target(item)
+    distance_line = f"\n📏 ~{distance:.1f} km de l'ISIMA" if distance is not None else ""
     return (
         f"🚨🔴 ALERTE : NOUVEAU LOGEMENT DISPONIBLE 🔴🚨\n"
         f"\n"
         f"🏠 {name}\n"
         f"📍 {address}\n"
-        f"💶 {rent} — 📐 {_format_area(item)}\n"
+        f"💶 {rent} — 📐 {_format_area(item)}"
+        f"{distance_line}\n"
         f"\n"
         f"⚡ Réservez vite :\n{link}"
     )

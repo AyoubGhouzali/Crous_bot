@@ -2,7 +2,10 @@
 
 Telegram bot that watches [trouverunlogement.lescrous.fr](https://trouverunlogement.lescrous.fr)
 and alerts when a CROUS accommodation becomes available in **Clermont-Ferrand
-or Aubière** (city names, accent-insensitive, or zip codes 63000/63170).
+or Aubière**: city names accent-insensitive (incl. the "Clermont-Fd"
+abbreviation), zip codes 63000/63100/63170/63178, **or GPS coordinates within
+`TARGET_RADIUS_KM` (default 10 km) of ISIMA** — so oddly-written addresses
+can't slip through. Alerts show the distance to campus.
 
 Notifications only — booking stays manual.
 
